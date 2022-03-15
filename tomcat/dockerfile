@@ -1,0 +1,29 @@
+FROM registry.access.redhat.com/ubi8/ubi:8.5-226.1645809065 
+
+#Java installieren
+RUN yum install -y java-1.8.0-openjdk
+
+ENV CATALINA_HOME=/usr/local/tomcat
+#ENV JAVA_HOME=
+
+#Tomcat installieren
+WORKDIR /usr/local
+
+RUN curl  https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.76/bin/apache-tomcat-8.5.76.tar.gz --output tomcat.tar.gz && \
+    tar -xzvf tomcat.tar.gz && mv apache-tomcat-8.5.76 tomcat 
+
+RUN groupadd tomcat && useradd -s /bin/false -g tomcat -d /usr/local/tomcat tomcat 
+
+RUN chown -hR tomcat:tomcat /usr/local/tomcat  && \
+    chmod +x /usr/local/tomcat/*
+
+#REST Data Services installieren
+
+#Oracle-Treiber installieren
+
+
+USER tomcat
+
+CMD [ "./tomcat/bin/catalina.sh", "run" ] 
+
+
